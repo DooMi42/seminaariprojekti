@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Seminaarityö – Next.js + Tailwind setup
 
-## Getting Started
+This repository hosts a Next.js 16 (App Router) project configured with TypeScript and Tailwind CSS for the *Seminaarityö: Yhteydenottolomake* assignment.
 
-First, run the development server:
+### Available scripts
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- `npm run dev` – start the local development server on `http://localhost:3000`
+- `npm run build` – build the production bundle
+- `npm run start` – run the production server
+- `npm run lint` – run ESLint with Next.js rules
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Project structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `app/` – App Router pages, shared layout, and global styles
+- `components/` – shared UI components (currently empty)
+- `data/contact-messages.json` – placeholder data store for contact submissions
+- `public/` – static assets served at the root
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Styling
 
-## Learn More
+Tailwind CSS is configured in `tailwind.config.js` with standard base/component/utility layers imported via `app/globals.css`. PostCSS (with Autoprefixer) runs automatically through Next.js.
 
-To learn more about Next.js, take a look at the following resources:
+### Next steps
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Implement the `/contact` route and form UI.
+2. Persist form submissions into `data/contact-messages.json` or another storage layer.
+3. Add validation, accessibility, and integration tests as the form evolves.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Happy building!
