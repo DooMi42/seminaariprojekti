@@ -1,29 +1,74 @@
-## Seminaarityö – Next.js + Tailwind setup
+# Seminaarityö: Next.js-yhteydenottopalvelu
 
-This repository hosts a Next.js 16 (App Router) project configured with TypeScript and Tailwind CSS for the *Seminaarityö: Yhteydenottolomake* assignment.
+## Johdanto
+Tämän seminaarityön tavoitteena oli toteuttaa pieni mutta teknisesti selkeä fullstack-kokonaisuus Next.js:n avulla. Ratkaisuna rakennettiin yhteydenottolomake, joka lähettää käyttäjän syötteet serverless-rajapinnalle, validoi datan palvelinpuolella ja tallentaa viestit JSON-tiedostoon. Projekti on rajattu tarkoituksella yksinkertaiseksi, mutta se sisältää riittävästi syvyyttä (frontend–backend–tiedostotallennus), jotta työn tavoitteet ja oppiminen on helppo osoittaa.
 
-### Available scripts
+## Tavoitteet
+- Ymmärtää Next.js App Router -arkkitehtuuria sekä client–server -rajapintaa.  
+- Toteuttaa lomake, joka sisältää client-validaation, tilahallinnan ja virheilmoitukset.  
+- Rakentaa serverless-API, joka validoi ja käsittelee datan luotettavasti.  
+- Tallentaa saapuvat viestit JSON-muodossa ilman ulkoista tietokantaa.  
+- Käsitellä onnistuneet lähetykset, validointivirheet ja virhetilanteet järkevästi.
 
-- `npm run dev` – start the local development server on `http://localhost:3000`
-- `npm run build` – build the production bundle
-- `npm run start` – run the production server
-- `npm run lint` – run ESLint with Next.js rules
+## Teknologiat
+- Next.js 16 / App Router  
+- TypeScript  
+- Tailwind CSS  
+- Node.js fs API  
 
-### Project structure
+## Projektin rakenne
+app/
+  page.tsx
+  contact/page.tsx
+  api/contact/route.ts
+components/
+  ContactForm.tsx
+data/
+  contact-messages.json
 
-- `app/` – App Router pages, shared layout, and global styles
-- `components/` – shared UI components (currently empty)
-- `data/contact-messages.json` – placeholder data store for contact submissions
-- `public/` – static assets served at the root
+## Toteutus
 
-### Styling
+### Lomake
+ContactForm.tsx hallinnoi syötekenttiä, client-validointia ja palautteen näyttämistä. Lähetyksen aikana painike lukittuu ja onnistumisen jälkeen lomake tyhjennetään.
 
-Tailwind CSS is configured in `tailwind.config.js` with standard base/component/utility layers imported via `app/globals.css`. PostCSS (with Autoprefixer) runs automatically through Next.js.
+### API route
+app/api/contact/route.ts:
+- hyväksyy vain POST  
+- validoi kentät  
+- estää honeypot-botit  
+- lisää id + createdAt  
+- tallentaa JSON-tiedostoon  
 
-### Next steps
+### JSON-tallennus
+Viestit tallennetaan data/contact-messages.json -tiedostoon. Jos tiedosto puuttuu, luodaan tyhjä taulukko.
 
-1. Implement the `/contact` route and form UI.
-2. Persist form submissions into `data/contact-messages.json` or another storage layer.
-3. Add validation, accessibility, and integration tests as the form evolves.
+## Validointi ja anti-spam
+- Kaikki kentät pakollisia  
+- accepted-kentän oltava true  
+- company-kenttä toimii honeypotina  
 
-Happy building!
+## Kuvankaappaukset
+![Lomakenäkymä](public/lomakekuva.png)
+![Onnistunut lähetys](public/onnistunulomake.png)
+![JSON-tallennus](public/jsonlomake.png)
+
+## Video
+TODO
+
+## Oppimiskokemukset
+- Next.js App Routerin serverless-reittien ja client-komponenttien yhteispeli selkeytyi.
+- Tiedostopohjainen tallennus pakotti huomioimaan virheidenkäsittelyn ja tietoturvan.
+- Tailwindin utility-lähestymistapa nopeutti tyylittelyä, mutta vaati kurinalaista komponenttijakoa.
+- Formien validointi ja anti-spam -tekniikat konkretisoituivat käytännön toteutuksen kautta.
+
+## Jatkokehitysideoita
+- sähköposti-ilmoitukset  
+- admin-näkymä  
+- captcha  
+- tietokanta  
+- validointikirjastot  
+
+## Lähteet
+Next.js Dokumentaatio – https://nextjs.org/docs  
+Node.js File System (fs) – https://nodejs.org/api/fs.html  
+Tailwind CSS Dokumentaatio – https://tailwindcss.com/docs
