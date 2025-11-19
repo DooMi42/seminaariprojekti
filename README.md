@@ -67,7 +67,7 @@ flowchart LR
 ```
 
 ## Video
-TODO
+https://youtu.be/DdKjDnVzMuk?si=Zmy4He3_XMMY-7Se
 
 ## Oppimiskokemukset
 
