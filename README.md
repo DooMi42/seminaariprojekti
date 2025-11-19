@@ -52,18 +52,37 @@ Viestit tallennetaan data/contact-messages.json -tiedostoon. Jos tiedosto puuttu
 ![Onnistunut lähetys](public/onnistunulomake.png)
 ![JSON-tallennus](public/jsonlomake.png)
 
+## Arkkitehtuurikaavio
+
+```mermaid
+flowchart LR
+    U[Käyttäjä selainessa] -->|täyttää lomakkeen| F[Lomakesivu /contact]
+    F -->|POST /api/contact| API[Serverless API app/api/contact/route.ts]
+    API -->|validointi OK| FS[(data/contact-messages.json)]
+    API -->|201 onnistui| F
+    API -->|400/500 virhe| F
+
+    A[Admin-sivu /admin] -->|lukee viestit| FS
+    A -->|näyttää listan| U
+```
+
 ## Video
 TODO
 
 ## Oppimiskokemukset
-- Next.js App Routerin serverless-reittien ja client-komponenttien yhteispeli selkeytyi.
-- Tiedostopohjainen tallennus pakotti huomioimaan virheidenkäsittelyn ja tietoturvan.
-- Tailwindin utility-lähestymistapa nopeutti tyylittelyä, mutta vaati kurinalaista komponenttijakoa.
-- Formien validointi ja anti-spam -tekniikat konkretisoituivat käytännön toteutuksen kautta.
+
+Työn aikana syvennyin erityisesti siihen, miten Next.js App Router yhdistää frontendin ja backendin saman koodipohjan alle. Aikaisemmin olin käyttänyt Reactia pääasiassa selaimen puolella, mutta tässä projektissa jouduin miettimään selkeästi, mitä ajetaan clientissä ja mitä palvelimella. Esimerkiksi lomakekomponentti on puhdas client-komponentti, kun taas API route ja viestien luku admin-näkymää varten toimivat vain palvelinympäristössä.
+
+Serverless-rajapinnan toteutus auttoi ymmärtämään paremmin HTTP-pyyntöjen elinkaarta ja sitä, miksi pelkkä client-validaatio ei riitä. Käytännössä sama data validoidaan kahteen kertaan: ensin selaimessa, jotta käyttäjä saa välittömän palautteen, ja sen jälkeen palvelimella, jotta tietoturva ja datan eheys voidaan varmistaa. Tässä yhteydessä honeypot-kenttä oli yksinkertainen, mutta toimiva tapa suojautua automatisoiduilta bottiviesteiltä.
+
+Tiedostopohjainen tallennus `fs`-APIn avulla oli hyvä tapa konkretisoida, mitä palvelin oikeasti tekee datalla. Samalla oli pakko pohtia ratkaisun rajoitteita: JSON-tiedosto ei skaalaudu kovin pitkälle, rinnakkaiset kirjoitukset voivat olla ongelma, eikä ratkaisu sovellu suoraan horisontaalisesti skaalautuvaan tuotantoympäristöön. Nämä havainnot oli helppo kytkeä jatkokehitysideoihin, kuten tietokannan käyttöönottoon tai Supabasen hyödyntämiseen.
+
+Admin-näkymän lisääminen auttoi myös katsomaan ratkaisua “kokonaisuutena”, ei vain yksittäisenä endpointina. Kun viestit luettiin takaisin samasta JSON-lähteestä ja näytettiin erillisellä sivulla, sovellus alkoi tuntua enemmän oikealta pieneltä järjestelmältä kuin yksittäiseltä lomakedemolta. Tämä vahvisti ymmärrystäni siitä, miten fullstack-sovelluksen eri kerrokset keskustelevat keskenään ja miten samaa dataa kuljetetaan läpi käyttöliittymän, API-kerroksen ja tallennusratkaisun.
+
 
 ## Jatkokehitysideoita
 - sähköposti-ilmoitukset  
-- admin-näkymä  
+- admin-näkymä toimimaan authentikoinnilla
 - captcha  
 - tietokanta  
 - validointikirjastot  
